@@ -110,6 +110,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Chess.cpp" />
+    <ClCompile Include="Pieces\Bishop.cpp" />
+    <ClCompile Include="Pieces\King.cpp" />
+    <ClCompile Include="Pieces\Knight.cpp" />
+    <ClCompile Include="Pieces\Pawn.cpp" />
+    <ClCompile Include="Pieces\Queen.cpp" />
+    <ClCompile Include="Pieces\Rook.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Headers.h" />
+    <ClInclude Include="Pieces.h" />
+    <ClInclude Include="Pieces\Bishop.h" />
+    <ClInclude Include="Pieces\King.h" />
+    <ClInclude Include="Pieces\Knight.h" />
+    <ClInclude Include="Pieces\Pawn.h" />
+    <ClInclude Include="Pieces\Pieces.h" />
+    <ClInclude Include="Pieces\Queen.h" />
+    <ClInclude Include="Pieces\Rook.h" />
+    <ClInclude Include="Position.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
