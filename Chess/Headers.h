@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 //Pieces
@@ -13,5 +14,11 @@
 #include "Pieces/Knight.h"
 #include "Pieces/Pawn.h"
 
+//Special moves?
+//Castling (sv: Rockad) (req: not moved before)
+//En passant (req: last move)
+//Pawn promotion
+
 //Game
+#include "History.h"
 #include "Board.h"

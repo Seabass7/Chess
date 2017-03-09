@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Headers.h" />
+    <ClInclude Include="History.h" />
     <ClInclude Include="Pieces.h" />
     <ClInclude Include="Pieces\Bishop.h" />
     <ClInclude Include="Pieces\King.h" />

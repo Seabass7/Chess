@@ -1,20 +1,20 @@
 #include "Headers.h"
 
-Board::Board()
+Board::Board() //TODO
 {
-	pieces.push_back(new Pawn(0, Position(1, 7)));
-	pieces.push_back(new Pawn(0, Position(2, 7)));
-	pieces.push_back(new Pawn(0, Position(3, 7)));
 	pieces.push_back(new Pawn(1, Position(2, 6)));
 	pieces.push_back(new Pawn(1, Position(1, 6)));
 	pieces.push_back(new Pawn(1, Position(3, 6)));
+	pieces.push_back(new Pawn(0, Position(1, 7)));
+	pieces.push_back(new Pawn(0, Position(2, 7)));
+	pieces.push_back(new Pawn(0, Position(3, 7)));
 }
 
-Board::~Board()
+Board::~Board() //TODO
 {
 }
 
-void Board::draw()
+void Board::draw() //TODO
 {
 	bool drawn;
 	for (int i = 1; i <= 8; i++) {
@@ -45,8 +45,11 @@ bool Board::move(const Position& position, const Position& destination)
 	for each (Pieces* piece in pieces)
 	{
 		if (piece->getPosition() == position)
-			if (piece->move(player, pieces, destination))
+			if (piece->move(player, pieces, destination)) {
 				player = !player;
+				//History* history2 = new History(position, destination, garbage);
+				//history.push_back(new History(position, destination, garbage));
+			}
 	}
 	return false;
 }

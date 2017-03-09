@@ -3,6 +3,8 @@
 class Board {
 private:
 	std::vector<Pieces*> pieces;
+	std::vector<Pieces*> sideBoard; //TODO
+	std::vector<History*> history; //TODO
 	bool player;
 public:
 	Board();
