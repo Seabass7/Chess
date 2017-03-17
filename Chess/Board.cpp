@@ -5,8 +5,9 @@ Board::Board() //TODO
 	pieces.push_back(new Pawn(1, Position(2, 6)));
 	pieces.push_back(new Pawn(1, Position(1, 6)));
 	pieces.push_back(new Pawn(1, Position(3, 6)));
-	pieces.push_back(new Pawn(0, Position(1, 7)));
-	pieces.push_back(new Pawn(0, Position(2, 7)));
+	pieces.push_back(new Pawn(1, Position(5, 2)));
+	pieces.push_back(new Knight(0, Position(1, 7)));
+	pieces.push_back(new Bishop(0, Position(2, 7)));
 	pieces.push_back(new Pawn(0, Position(3, 7)));
 }
 
@@ -38,18 +39,43 @@ void Board::draw() //TODO
 	}
 	std::cout << "-------------------------------" << std::endl;
 	std::cout << std::endl;
+
+	//for each (History* hist in history) {
+	//	std::cout << "piece" << hist->getPosition().x << "," << hist->getPosition().y << " - ";
+	//	if (hist->getRemovedPiece() != nullptr)
+	//		hist->getRemovedPiece()->draw();
+	//	std::cout << std::endl;
+	//}
+	
 }
 
 bool Board::move(const Position& position, const Position& destination)
 {
+	Pieces* garbage = new Pawn(0, Position(9,9));
 	for each (Pieces* piece in pieces)
 	{
-		if (piece->getPosition() == position)
-			if (piece->move(player, pieces, destination)) {
+		if (piece->getPosition() == position) //Check for player
+			if (piece->move(player, pieces, destination, &garbage)) {
 				player = !player;
-				//History* history2 = new History(position, destination, garbage);
-				//history.push_back(new History(position, destination, garbage));
+				if (garbage->getPosition() == Position(9, 9)) {
+					delete(garbage);
+					history.push_back(new History(position, destination, nullptr));
+				} else {
+					remove(garbage);
+					history.push_back(new History(position, destination, garbage));
+				}
+				return true;
+			} else {
+				std::cout << "Invalid move." << std::endl;
 			}
 	}
 	return false;
+}
+
+void Board::remove(Pieces * piece)
+{
+	sideBoard.push_back(piece);
+	std::vector<Pieces*>::iterator position = std::find(pieces.begin(), pieces.end(), piece);
+	if (position != pieces.end())
+		pieces.erase(position);
 }

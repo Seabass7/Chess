@@ -11,4 +11,5 @@ public:
 	~Board();
 	void draw();
 	bool move(const Position& position, const Position& destination);
+	void remove(Pieces* piece);
 };

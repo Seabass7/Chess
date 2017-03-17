@@ -8,7 +8,7 @@ void Pawn::draw() //TODO
 		std::cout << " q ";
 }
 
-bool Pawn::move(const bool player, const std::vector<Pieces*>& board, const Position & position)
+bool Pawn::move(const bool player, const std::vector<Pieces*>& board, const Position & position, Pieces** garbage)
 {
 	//One step forward
 	if (((this->position.y - 1 == position.y && player == 0) || (this->position.y + 1 == position.y && player == 1)) && this->position.x == position.x) {
@@ -48,7 +48,7 @@ bool Pawn::move(const bool player, const std::vector<Pieces*>& board, const Posi
 				if (piece->getPosition() == position) {
 					this->position.x = position.x;
 					this->position.y = position.y;
-					piece->removeFromPlay();
+					*garbage = piece;
 					return true;
 				} else if ((piece->getPosition().y == 4 || piece->getPosition().y == 5) && (piece->getPosition().y + 1 == position.y || piece->getPosition().y - 1 == position.y)) {
 					//en passant (https://en.wikipedia.org/wiki/En_passant)
@@ -60,10 +60,4 @@ bool Pawn::move(const bool player, const std::vector<Pieces*>& board, const Posi
 		return false;
 	}
 	return false;
-}
-
-void Pawn::removeFromPlay() //PLEASE, MAKE SOMETHING BETTER //TODO
-{
-	position.x = position.x +10;
-	position.y = position.y +10;
 }

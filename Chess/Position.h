@@ -16,6 +16,12 @@ public:
 			return (y < position.y);
 		return (x < position.x);
 	}
+	friend class Board; //TEST
 	friend class Pieces;
 	friend class Pawn;
+	friend class Knight;
+	friend class Bishop;
+	friend class Rook;
+	friend class Queen;
+	friend class King;
 };

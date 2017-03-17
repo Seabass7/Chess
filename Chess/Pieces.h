@@ -12,6 +12,5 @@ public:
 	bool getOwner() { return owner; };
 	Position& getPosition() { return position; };
 	virtual void draw() =0;
-	virtual bool move(const bool player, const std::vector<Pieces*>& board, const Position& position) =0;
-	virtual void removeFromPlay() =0;
+	virtual bool move(const bool player, const std::vector<Pieces*>& board, const Position& position, Pieces** garbage) =0;
 };
