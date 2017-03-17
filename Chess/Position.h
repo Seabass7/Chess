@@ -7,6 +7,9 @@ private:
 public:
 	Position() {};
 	Position(int x, int y) : x(x), y(y) {};
+	bool isValid() const {
+		return ((x >= 1 && x <= 8) && (y >= 1 && y <= 8));
+	};
 	bool Position::operator==(const Position& position) const {
 		return (position.x == x && position.y == y);
 	}

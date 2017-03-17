@@ -9,6 +9,9 @@ Board::Board() //TODO
 	pieces.push_back(new Knight(0, Position(1, 7)));
 	pieces.push_back(new Bishop(0, Position(2, 7)));
 	pieces.push_back(new Pawn(0, Position(3, 7)));
+	pieces.push_back(new Rook(1, Position(2, 1)));
+	pieces.push_back(new Queen(0, Position(1, 1)));
+	pieces.push_back(new King(0, Position(4, 1)));
 }
 
 Board::~Board() //TODO
@@ -54,8 +57,8 @@ bool Board::move(const Position& position, const Position& destination)
 	Pieces* garbage = new Pawn(0, Position(9,9));
 	for each (Pieces* piece in pieces)
 	{
-		if (piece->getPosition() == position) //Check for player
-			if (piece->move(player, pieces, destination, &garbage)) {
+		if (piece->getPosition() == position) { //Check for player (&& player == owner)
+			if (destination.isValid() && piece->move(player, pieces, destination, &garbage)) {
 				player = !player;
 				if (garbage->getPosition() == Position(9, 9)) {
 					delete(garbage);
@@ -68,6 +71,7 @@ bool Board::move(const Position& position, const Position& destination)
 			} else {
 				std::cout << "Invalid move." << std::endl;
 			}
+		}
 	}
 	return false;
 }

@@ -5,7 +5,7 @@ void Pawn::draw() //TODO
 	if (owner == 0)
 		std::cout << " P ";
 	else
-		std::cout << " q ";
+		std::cout << "-p ";
 }
 
 bool Pawn::move(const bool player, const std::vector<Pieces*>& board, const Position & position, Pieces** garbage)
