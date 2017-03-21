@@ -6,4 +6,5 @@ public:
 	~King() {};
 	void draw();
 	bool move(const bool player, const std::vector<Pieces*>& board, const Position& position, Pieces** garbage);
+	bool check(const std::vector<Pieces*>& board, const Position& position);
 };

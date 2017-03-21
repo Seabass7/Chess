@@ -67,6 +67,7 @@ bool Board::move(const Position& position, const Position& destination)
 					remove(garbage);
 					history.push_back(new History(position, destination, garbage));
 				}
+				piece->stats(); //Add more?
 				return true;
 			} else {
 				std::cout << "Invalid move." << std::endl;
