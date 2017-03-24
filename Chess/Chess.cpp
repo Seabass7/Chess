@@ -64,34 +64,57 @@ int main()
 			}
 		}
 
-		sf::RectangleShape sidebar(sf::Vector2f(200, 600));
-		sidebar.setPosition(600, 0);
+		//sf::RectangleShape tablesideLeft(sf::Vector2f(25, 600));
+		//tablesideLeft.setPosition(0, 25);
+		//tablesideLeft.setFillColor(sf::Color::Yellow);
+		//window.draw(tablesideLeft);
+
+		//sf::RectangleShape tablesideRight(sf::Vector2f(25, 600));
+		//tablesideRight.setPosition(625, 25);
+		//tablesideRight.setFillColor(sf::Color::Yellow);
+		//window.draw(tablesideRight);
+
+		//sf::RectangleShape tablesideTop(sf::Vector2f(600, 25));
+		//tablesideTop.setPosition(25, 0);
+		//tablesideTop.setFillColor(sf::Color::Yellow);
+		//window.draw(tablesideTop);
+
+		//sf::RectangleShape tablesideBottom(sf::Vector2f(600, 25));
+		//tablesideBottom.setPosition(25, 625);
+		//tablesideBottom.setFillColor(sf::Color::Yellow);
+		//window.draw(tablesideBottom);
+
+		sf::RectangleShape sidebar(sf::Vector2f(150, 650));
+		sidebar.setPosition(650, 0);
 		sidebar.setFillColor(sf::Color::Magenta);
 		window.draw(sidebar);
 
-		sf::RectangleShape history(sf::Vector2f(180, 400));
-		history.setPosition(610, 10);
+		sf::RectangleShape history(sf::Vector2f(130, 400));
+		history.setPosition(660, 10);
 		history.setFillColor(sf::Color::Red);
 		window.draw(history);
 
-		sf::RectangleShape timerLabel(sf::Vector2f(85, 50));
-		timerLabel.setPosition(610, 540);
+		sf::RectangleShape timerLabel(sf::Vector2f(60, 50));
+		timerLabel.setPosition(660, 540);
 		timerLabel.setFillColor(sf::Color::Red);
 		window.draw(timerLabel);
 
-		sf::RectangleShape exitButton(sf::Vector2f(85, 50));
-		exitButton.setPosition(705, 540);
+		sf::RectangleShape exitButton(sf::Vector2f(60, 50));
+		exitButton.setPosition(730, 540);
 		exitButton.setFillColor(sf::Color::Red);
 		window.draw(exitButton);
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			sf::Vector2f localPosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
-			if (board.validPiece(selected)) {
-				if (!board.move(selected, Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE)))
+			if (localPosition.x <= TILESIZE * 8 || localPosition.y <= TILESIZE * 8) {
+				if (board.validPiece(selected)) {
+					if (!board.move(selected, Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE)))
+						selected = Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE);
+				}
+				else {
 					selected = Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE);
-			} else {
-				selected = Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE);
+				}
 			}
 		}
 

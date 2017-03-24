@@ -18,5 +18,5 @@ public:
 		sprite.setTexture(texture);
 	};
 	~Pawn() { std::cout << "Removing pawn..."; };
-	bool move(const bool player, const std::vector<Pieces*>& board, const Position& position, Pieces** garbage);
+	bool testMove(const bool player, const std::vector<Pieces*>& board, const std::vector<History*>& history, const Position& position, Pieces** garbage);
 };

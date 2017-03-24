@@ -13,4 +13,5 @@ public:
 	bool move(const Position& position, const Position& destination);
 	bool validPiece(const Position& position);
 	void remove(Pieces* piece);
+	bool checkLast(Pieces* piece);
 };

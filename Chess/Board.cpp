@@ -22,9 +22,9 @@ Board::Board() //TODO
 	pieces.push_back(new Bishop(0, Position(2, 7)));
 	pieces.push_back(new Bishop(0, Position(5, 7)));
 	//King
-	pieces.push_back(new King(0, Position(3, 7)));
+	pieces.push_back(new King(0, Position(4, 7)));
 	//Queen
-	pieces.push_back(new Queen(0, Position(4, 7)));
+	pieces.push_back(new Queen(0, Position(3, 7)));
 
 	//Black
 	//Pawns
@@ -46,15 +46,9 @@ Board::Board() //TODO
 	pieces.push_back(new Bishop(1, Position(2, 0)));
 	pieces.push_back(new Bishop(1, Position(5, 0)));
 	//King
-	pieces.push_back(new King(1, Position(3, 0)));
+	pieces.push_back(new King(1, Position(4, 0)));
 	//Queen
-	pieces.push_back(new Queen(1, Position(4, 0)));
-
-	//pieces.push_back(new Knight(0, Position(1, 7)));
-	//pieces.push_back(new Bishop(0, Position(2, 7)));
-	//pieces.push_back(new Rook(1, Position(2, 1)));
-	//pieces.push_back(new Queen(0, Position(1, 1)));
-	//pieces.push_back(new King(0, Position(4, 1)));
+	pieces.push_back(new Queen(1, Position(3, 0)));
 }
 
 Board::~Board() //TODO
@@ -69,8 +63,8 @@ void Board::draw(sf::RenderWindow& window, const Position& selected) //TODO
 			{
 				if (piece->getPosition() == Position(x, y)) {
 					if (selected == Position(x, y) && piece->getOwner() == player) {
-						sf::RectangleShape current(sf::Vector2f(TILESIZE - 4, TILESIZE - 4));
-						current.setPosition(x * TILESIZE + 2, y * TILESIZE + 2);
+						sf::RectangleShape current(sf::Vector2f(TILESIZE - 4.f, TILESIZE - 4.f));
+						current.setPosition(x * TILESIZE + 2.f, y * TILESIZE + 2.f);
 						current.setFillColor(sf::Color::Magenta);
 						window.draw(current);
 					}
@@ -96,15 +90,19 @@ bool Board::move(const Position& position, const Position& destination)
 	for each (Pieces* piece in pieces)
 	{
 		if (piece->getPosition() == position && player == piece->getOwner()) {
-			if (destination.isValid() && piece->move(player, pieces, destination, &garbage)) {
-				player = !player;
+			if (destination.isValid() && piece->move(player, pieces, history, destination, &garbage)) {
+				if (piece->Pawn == Pieces::Pawn && (piece->getPosition().y == 7 || piece->getPosition().y == 0)) {
+					remove(piece);
+					pieces.push_back(new ::Queen(player, piece->getPosition())); //TODO: Choose piece
+				}
 				if (garbage == nullptr) {
 					history.push_back(new History(position, destination, nullptr));
 				} else {
 					remove(garbage);
 					history.push_back(new History(position, destination, garbage));
 				}
-				piece->stats(); //Add more?
+				piece->stats(garbage); //Add more?
+				player = !player;
 				return true;
 			} else {
 				std::cout << "Invalid move." << std::endl;
@@ -134,4 +132,11 @@ void Board::remove(Pieces * piece)
 	std::vector<Pieces*>::iterator position = std::find(pieces.begin(), pieces.end(), piece);
 	if (position != pieces.end())
 		pieces.erase(position);
+}
+
+bool Board::checkLast(Pieces * piece)
+{
+	if (history.at(0)->getDestination() == piece->getPosition())
+		return true;
+	return false;
 }

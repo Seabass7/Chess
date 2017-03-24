@@ -9,6 +9,7 @@
 
 //Pieces
 #include "Position.h"
+#include "History.h"
 #include "Pieces.h"
 #include "Pieces/King.h"
 #include "Pieces/Queen.h"
@@ -18,10 +19,8 @@
 #include "Pieces/Pawn.h"
 
 //Special moves?
-//Castling (sv: Rockad) (req: not moved before)
-//En passant (req: last move)
 //Pawn promotion
 
 //Game
-#include "History.h"
+
 #include "Board.h"

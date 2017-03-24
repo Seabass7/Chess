@@ -18,6 +18,5 @@ public:
 		sprite.setTexture(texture);
 	};
 	~Bishop() {};
-	void draw();
-	bool move(const bool player, const std::vector<Pieces*>& board, const Position& position, Pieces** garbage);
+	bool testMove(const bool player, const std::vector<Pieces*>& board, const std::vector<History*>& history, const Position& position, Pieces** garbage);
 };
