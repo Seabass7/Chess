@@ -17,9 +17,9 @@ bool Knight::move(const bool player, const std::vector<Pieces*>& board, const Po
 		for each (Pieces* piece in board)
 		{
 			if (piece->getPosition() == position) {
-				if (piece->getOwner() == player)
+				if (piece->getOwner() == player) {
 					return false;
-				else {
+				} else {
 					this->position.x = position.x;
 					this->position.y = position.y;
 					*garbage = piece;
@@ -27,6 +27,8 @@ bool Knight::move(const bool player, const std::vector<Pieces*>& board, const Po
 				}
 			}
 		}
+		this->position.x = position.x;
+		this->position.y = position.y;
 		return true;
 	}
 	return false;

@@ -9,7 +9,8 @@ private:
 public:
 	Board();
 	~Board();
-	void draw();
+	void Board::draw(sf::RenderWindow& window, const Position& selected);
 	bool move(const Position& position, const Position& destination);
+	bool validPiece(const Position& position);
 	void remove(Pieces* piece);
 };

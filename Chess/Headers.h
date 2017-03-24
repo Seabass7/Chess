@@ -3,6 +3,9 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <SFML/Graphics.hpp>
+
+#define TILESIZE 75
 
 //Pieces
 #include "Position.h"
