@@ -23,7 +23,6 @@ bool Rook::testMove(const bool player, const std::vector<Pieces*>& board, const 
 			if (*original > comp)
 				mod = -1;
 			for (int i = start + mod; i != stop + mod; i += mod) {
-				std::cout << i << std::endl;
 				for each (Pieces* piece in board) {
 					if ((piece->getPosition() == Position(constant, i) && dir == 0) || (piece->getPosition() == Position(i, constant) && dir == 1)) {
 						if (i == stop && piece->getOwner() != player) {

@@ -11,7 +11,6 @@ protected:
 	Position position;
 	sf::Texture texture;
 	sf::Sprite sprite;
-private:
 	bool check(const bool player, const std::vector<Pieces*>& board, const std::vector<History*>& history, const Position& position) {
 		Pieces* tempGarbage;
 		Position temp = this->position;

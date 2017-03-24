@@ -19,5 +19,4 @@ public:
 	};
 	~King() {};
 	bool testMove(const bool player, const std::vector<Pieces*>& board, const std::vector<History*>& history, const Position& position, Pieces** garbage);
-	bool check(const std::vector<Pieces*>& board, const Position& position);
 };
