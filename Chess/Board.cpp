@@ -1,6 +1,6 @@
 #include "Headers.h"
 
-Board::Board() //TODO
+Board::Board()
 {
 	//White
 	//Pawns
@@ -55,8 +55,9 @@ Board::~Board() //TODO
 {
 }
 
-void Board::draw(sf::RenderWindow& window, const Position& selected) //TODO
+void Board::draw(sf::RenderWindow& window, const Position& selected, const sf::View& boardView, const sf::View& backView) //TODO
 {
+	window.setView(boardView);
 	for (int y = 0; y < 8; y++) {
 		for (int x = 0; x < 8; x++) {
 			for each (Pieces* piece in pieces)
@@ -75,13 +76,19 @@ void Board::draw(sf::RenderWindow& window, const Position& selected) //TODO
 		}
 	}
 
-	//for each (History* hist in history) {
-	//	std::cout << "piece" << hist->getPosition().x << "," << hist->getPosition().y << " - ";
-	//	if (hist->getRemovedPiece() != nullptr)
-	//		hist->getRemovedPiece()->draw();
-	//	std::cout << std::endl;
-	//}
-	
+	window.setView(backView);
+	int p0 = 0, p1 = 0;
+	for each (History* item in history) {
+		if (item->getRemovedPiece() != nullptr) {
+			if (item->getRemovedPiece()->getOwner() == 1) {
+				item->getRemovedPiece()->drawSide(window, p1%8, p1/8);
+				p1++;
+			} else {
+				item->getRemovedPiece()->drawSide(window, p0%8, p0/8 + 2);
+				p0++;
+			}
+		}
+	}
 }
 
 bool Board::move(const Position& position, const Position& destination)
@@ -91,7 +98,7 @@ bool Board::move(const Position& position, const Position& destination)
 	{
 		if (piece->getPosition() == position && player == piece->getOwner()) {
 			if (destination.isValid() && piece->move(player, pieces, history, destination, &garbage)) {
-				if (piece->Pawn == Pieces::Pawn && (piece->getPosition().y == 7 || piece->getPosition().y == 0)) {
+				if (piece->getType() == Pieces::Pawn && (piece->getPosition().y == 7 || piece->getPosition().y == 0)) {
 					remove(piece);
 					pieces.push_back(new ::Queen(player, piece->getPosition())); //TODO: Choose piece
 				}
@@ -101,7 +108,7 @@ bool Board::move(const Position& position, const Position& destination)
 					remove(garbage);
 					history.push_back(new History(position, destination, garbage));
 				}
-				piece->stats(garbage); //Add more?
+				piece->stats(garbage);
 				player = !player;
 				return true;
 			} else {
@@ -110,6 +117,23 @@ bool Board::move(const Position& position, const Position& destination)
 		}
 	}
 	return false;
+}
+
+bool Board::gameOver()
+{
+	Pieces* garbage = nullptr;
+	for each (Pieces* piece in pieces) {
+		if (piece->getOwner() == player) {
+			for (int y = 0; y < 8; y++) {
+				for (int x = 0; x < 8; x++) {
+					if (piece->testMove(player, pieces, history, Position(x, y), &garbage)) {
+						return false;
+					}
+				}
+			}
+		}
+	}
+	return true;
 }
 
 bool Board::validPiece(const Position & position)
@@ -140,3 +164,5 @@ bool Board::checkLast(Pieces * piece)
 		return true;
 	return false;
 }
+
+

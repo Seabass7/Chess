@@ -2,7 +2,6 @@
 
 bool Queen::testMove(const bool player, const std::vector<Pieces*>& board, const std::vector<History*>& history, const Position & position, Pieces ** garbage)
 {
-	std::cout << "test" << std::endl;
 	if (!(this->position == position)) {
 		if (this->position.x == position.x || this->position.y == position.y) {
 			int start, stop, mod = 1, comp, dir, constant;

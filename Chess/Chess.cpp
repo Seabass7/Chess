@@ -24,14 +24,42 @@ sf::View calcView(const sf::Vector2u &windowsize, const sf::Vector2u &designedsi
 	return view;
 }
 
+sf::View calcBoardView(const sf::Vector2u &windowsize, const sf::Vector2u &boardsize, const sf::Vector2u &designedsize)
+{
+	sf::FloatRect viewport(0.0875f, 0.109375f, 0.625f, 0.78125f);
+
+	float screenwidth = windowsize.x / static_cast<float>(designedsize.x);
+	float screenheight = windowsize.y / static_cast<float>(designedsize.y);
+
+	if (screenwidth > screenheight)
+	{
+		viewport.width *= screenheight / screenwidth;
+		viewport.left = (0.7125f - viewport.width) / 1.425f;
+	}
+	else if (screenwidth < screenheight)
+	{
+		viewport.height *= screenwidth / screenheight;
+		viewport.top = (1.f - viewport.height) / 2.f;
+	}
+
+	sf::View view(sf::FloatRect(0, 0, boardsize.x, boardsize.y));
+	view.setViewport(viewport);
+
+	return view;
+}
+
 int main()
 {
 	Board board;
 
-	const sf::Vector2u designedsize(800, 600);
+	const sf::Vector2u boardSize(800, 800);
+	const sf::Vector2u backSize(1280, 1024);
 
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Chess");
-	window.setView(calcView(window.getSize(), designedsize));
+	sf::View backView = calcView(window.getSize(), backSize);
+	sf::View boardView = calcBoardView(window.getSize(), boardSize, backSize);
+	//boardView.setViewport(sf::FloatRect(0.0875f, 0.109375f, 0.625f, 0.78125f)); //add to calcview?
+	//backView.setViewport(sf::FloatRect(0, 0, 1, 1));
 	//window.setVerticalSyncEnabled(true);
 	window.setFramerateLimit(10);
 
@@ -48,11 +76,24 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-			if (event.type == sf::Event::Resized)
-				window.setView(calcView(sf::Vector2u(event.size.width, event.size.height), designedsize));
+			if (event.type == sf::Event::Resized) {
+				backView = calcView(sf::Vector2u(event.size.width, event.size.height), backSize);
+				boardView = calcBoardView(sf::Vector2u(event.size.width, event.size.height), boardSize, backSize);
+			}
 		}
 
 		window.clear();
+
+		//START BACK
+		window.setView(backView);
+		sf::RectangleShape sidebar(sf::Vector2f(256, 1280));
+		sidebar.setPosition(1024, 0);
+		sidebar.setFillColor(sf::Color::White);
+		window.draw(sidebar);
+		//END BACK
+
+		//START BOARD
+		window.setView(boardView);
 		sf::RectangleShape tile(sf::Vector2f(TILESIZE, TILESIZE));
 		for (int y = 0; y < 8; ++y)
 		{
@@ -64,53 +105,19 @@ int main()
 			}
 		}
 
-		//sf::RectangleShape tablesideLeft(sf::Vector2f(25, 600));
-		//tablesideLeft.setPosition(0, 25);
-		//tablesideLeft.setFillColor(sf::Color::Yellow);
-		//window.draw(tablesideLeft);
-
-		//sf::RectangleShape tablesideRight(sf::Vector2f(25, 600));
-		//tablesideRight.setPosition(625, 25);
-		//tablesideRight.setFillColor(sf::Color::Yellow);
-		//window.draw(tablesideRight);
-
-		//sf::RectangleShape tablesideTop(sf::Vector2f(600, 25));
-		//tablesideTop.setPosition(25, 0);
-		//tablesideTop.setFillColor(sf::Color::Yellow);
-		//window.draw(tablesideTop);
-
-		//sf::RectangleShape tablesideBottom(sf::Vector2f(600, 25));
-		//tablesideBottom.setPosition(25, 625);
-		//tablesideBottom.setFillColor(sf::Color::Yellow);
-		//window.draw(tablesideBottom);
-
-		sf::RectangleShape sidebar(sf::Vector2f(150, 650));
-		sidebar.setPosition(650, 0);
-		sidebar.setFillColor(sf::Color::Magenta);
-		window.draw(sidebar);
-
-		sf::RectangleShape history(sf::Vector2f(130, 400));
-		history.setPosition(660, 10);
-		history.setFillColor(sf::Color::Red);
-		window.draw(history);
-
-		sf::RectangleShape timerLabel(sf::Vector2f(60, 50));
-		timerLabel.setPosition(660, 540);
-		timerLabel.setFillColor(sf::Color::Red);
-		window.draw(timerLabel);
-
-		sf::RectangleShape exitButton(sf::Vector2f(60, 50));
-		exitButton.setPosition(730, 540);
-		exitButton.setFillColor(sf::Color::Red);
-		window.draw(exitButton);
-
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
 			sf::Vector2f localPosition = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 			if (localPosition.x <= TILESIZE * 8 || localPosition.y <= TILESIZE * 8) {
 				if (board.validPiece(selected)) {
-					if (!board.move(selected, Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE)))
+					if (!board.move(selected, Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE))) {
 						selected = Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE);
+					}
+					else {
+						if (board.gameOver()) {
+							std::cout << "Check mate!" << std::endl;
+						}
+					}
 				}
 				else {
 					selected = Position(localPosition.x / TILESIZE, localPosition.y / TILESIZE);
@@ -118,7 +125,8 @@ int main()
 			}
 		}
 
-		board.draw(window, selected);
+		board.draw(window, selected, boardView, backView);
+		//END BOARD
 
 		window.display();
 
