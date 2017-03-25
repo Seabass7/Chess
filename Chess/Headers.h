@@ -5,7 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-#define TILESIZE 75
+#define TILESIZE 100
 
 //Pieces
 #include "Position.h"
