@@ -22,23 +22,26 @@ bool King::testMove(const bool player, const std::vector<Pieces*>& board, const 
 		} else {
 			return false;
 		}
-	} else if ((position.x == 2 || position.x == 6) && (position.y == 0 || position.y == 7) && moves == 0 && !check(player, board, history, position, garbage)) {
-		for each (Pieces* piece in board) {
-			if (piece->getPosition().x + 2 == position.x && piece->getType() == Pieces::Rook) {
-				if ((piece->getPosition().y == 0 && piece->getOwner() == 1) || (piece->getPosition().y == 7 && piece->getOwner() == 0)) {
-					if (piece->getMoves() == 0) {
-						if (piece->move(player, board, history, Position(3, position.y), garbage)) {
-							piece->stats(nullptr);
-							return true;
+	} else if ((position.x == 2 || position.x == 6) && (position.y == 0 || position.y == 7) && moves == 0) {
+		*garbage = nullptr; //Fix for invalid memory location in check function
+		if (!check(player, board, history, position, garbage)) {
+			for each (Pieces* piece in board) {
+				if (piece->getPosition().x + 2 == position.x && piece->getType() == Pieces::Rook) {
+					if ((piece->getPosition().y == 0 && piece->getOwner() == 1) || (piece->getPosition().y == 7 && piece->getOwner() == 0)) {
+						if (piece->getMoves() == 0) {
+							if (piece->move(player, board, history, Position(3, position.y), &(*garbage))) {
+								piece->stats(nullptr);
+								return true;
+							}
 						}
 					}
-				}
-			} else if (piece->getPosition().x - 1 == position.x && piece->getType() == Pieces::Rook) {
-				if ((piece->getPosition().y == 0 && piece->getOwner() == 1) || (piece->getPosition().y == 7 && piece->getOwner() == 0)) {
-					if (piece->getMoves() == 0) {
-						if (piece->move(player, board, history, Position(5, position.y), garbage)) {
-							piece->stats(nullptr);
-							return true;
+				} else if (piece->getPosition().x - 1 == position.x && piece->getType() == Pieces::Rook) {
+					if ((piece->getPosition().y == 0 && piece->getOwner() == 1) || (piece->getPosition().y == 7 && piece->getOwner() == 0)) {
+						if (piece->getMoves() == 0) {
+							if (piece->move(player, board, history, Position(5, position.y), &(*garbage))) {
+								piece->stats(nullptr);
+								return true;
+							}
 						}
 					}
 				}

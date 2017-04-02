@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 
 #define TILESIZE 100
+#define PADDING 112
 
 //Pieces
 #include "Position.h"
