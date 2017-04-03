@@ -2,6 +2,9 @@
 
 Board::Board()
 {
+	player = 0;
+	running = 1;
+
 	//White
 	//Pawns
 	pieces.push_back(new Pawn(0, Position(0, 6)));
@@ -49,13 +52,29 @@ Board::Board()
 	pieces.push_back(new King(1, Position(4, 0)));
 	//Queen
 	pieces.push_back(new Queen(1, Position(3, 0)));
+
+	if (!texture.loadFromFile("Textures/wood.png"))
+	{
+		std::cout << "Error loading board texture" << std::endl;
+	}
+	sprite.setTexture(texture);
 }
 
-Board::~Board() //TODO
+Board::~Board()
 {
+	for each(Pieces* piece in pieces) {
+		delete piece;
+	}
+	pieces.clear();
 }
 
-void Board::draw(sf::RenderWindow& window, const Position& selected, const sf::View& boardView, const sf::View& backView) //TODO
+void Board::drawBackground(sf::RenderWindow & window)
+{
+	sprite.setPosition(0, 0);
+	window.draw(sprite);
+}
+
+void Board::draw(sf::RenderWindow& window, const Position& selected, const sf::View& boardView, const sf::View& backView)
 {
 	window.setView(boardView);
 	for (int y = 0; y < 8; y++) {
@@ -64,9 +83,9 @@ void Board::draw(sf::RenderWindow& window, const Position& selected, const sf::V
 			{
 				if (piece->getPosition() == Position(x, y)) {
 					if (selected == Position(x, y) && piece->getOwner() == player) {
-						sf::RectangleShape current(sf::Vector2f(TILESIZE - 4.f, TILESIZE - 4.f));
-						current.setPosition(x * TILESIZE + 2.f, y * TILESIZE + 2.f);
-						current.setFillColor(sf::Color::Magenta);
+						sf::RectangleShape current(sf::Vector2f(TILESIZE, TILESIZE));
+						current.setPosition(x * TILESIZE, y * TILESIZE);
+						current.setFillColor(sf::Color::Color(192, 255, 182));
 						window.draw(current);
 					}
 					piece->draw(window);
@@ -133,6 +152,7 @@ bool Board::gameOver()
 			}
 		}
 	}
+	running = 0;
 	return true;
 }
 
