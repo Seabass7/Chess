@@ -11,7 +11,7 @@ bool Pieces::check(const bool player, const std::vector<Pieces*>& board, const s
 	for each (Pieces* king in board) {
 		if (king->type == Pieces::King && king->getOwner() == player) {
 			for each (Pieces* piece in board) {
-				if (piece->getOwner() != player && !(piece->getPosition() == this->position)) {
+				if (piece->getOwner() != player && !(piece->getPosition() == this->position) && piece->getPosition().isValid()) {
 					if (piece->testMove(!player, board, history, king->getPosition(), &tempGarbage)) {
 						this->position = temp;
 						if (*garbage != nullptr) {

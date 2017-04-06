@@ -38,7 +38,7 @@ int main()
 	sf::View backView = calcView(window.getSize(), backSize, backSize, defaultBackView);
 	sf::View boardView = calcView(window.getSize(), boardSize, backSize, defaultBoardView);
 	//window.setVerticalSyncEnabled(true);
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(15);
 
 	sf::Font font;
 	if (!font.loadFromFile("Textures/arialbd.ttf"))
